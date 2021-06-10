@@ -1,0 +1,71 @@
+package org.techtown.a168example;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.res.Resources;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ScrollView;
+
+public class MainActivity extends AppCompatActivity {
+    ImageView img1,img2;
+    ScrollView scrollview,scrollview1;
+    BitmapDrawable bit_Map;
+    int idx = 0;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        scrollview = findViewById(R.id.scrollView1);
+        scrollview1 = findViewById(R.id.scrollView2);
+        img1 = findViewById(R.id.img1);
+        img2 = findViewById(R.id.img2);
+        scrollview.setHorizontalScrollBarEnabled(true);
+        scrollview1.setHorizontalScrollBarEnabled(true);
+
+
+
+
+    }
+    public void OnclickUp(View view){
+        idx = 1;
+        changeImage(idx);
+    }
+    public void OnclickDown(View view){
+        idx = 0;
+        changeImage(idx);
+    }
+
+
+    private void changeImage(int x){
+        if(x==1) {
+            Resources res = getResources();
+            bit_Map = (BitmapDrawable) res.getDrawable(R.drawable.img1);
+            int bitmapWidth = bit_Map.getIntrinsicWidth();
+            int bitmapHeight = bit_Map.getIntrinsicHeight();
+
+            img1.setImageDrawable(bit_Map);
+            img1.getLayoutParams().width = bitmapWidth;
+            img1.getLayoutParams().height = bitmapHeight;
+            img2.setVisibility(View.INVISIBLE);
+            img1.setVisibility(View.VISIBLE);
+        }else if(x==0){
+            Resources res = getResources();
+            bit_Map = (BitmapDrawable)res.getDrawable(R.drawable.img1);
+            int bitmapWidth = bit_Map.getIntrinsicWidth();
+            int bitmapHeight = bit_Map.getIntrinsicHeight();
+
+            img2.setImageDrawable(bit_Map);
+            img2.getLayoutParams().width = bitmapWidth;
+            img2.getLayoutParams().height = bitmapHeight;
+            img1.setVisibility(View.INVISIBLE);
+            img2.setVisibility(View.VISIBLE);
+        }
+    }
+}
