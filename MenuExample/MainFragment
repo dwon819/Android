@@ -8,19 +8,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        EditText id, pass;
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_main,container,false);
         Button button = rootView.findViewById(R.id.button1);
+
+        id = rootView.findViewById(R.id.id);
+        pass = rootView.findViewById(R.id.pass);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity activity = (MainActivity)getActivity();
-                activity.onFragmentChanged(0);
+                if(!id.getText().toString().equals("")&&!pass.getText().toString().equals("")) {
+                    MainActivity activity = (MainActivity) getActivity();
+                    activity.onFragmentChanged(0);
+                }else{
+                    Toast.makeText(getContext(),"빈칸입니다.",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         return rootView;
