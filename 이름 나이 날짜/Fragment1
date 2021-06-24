@@ -1,0 +1,98 @@
+package org.techtown.mission09;
+
+import android.app.DatePickerDialog;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+public class Fragment1 extends Fragment {
+    EditText nameIn,ageIn;
+    Button birth,savebt;
+
+    public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy 년 MM 월 dd 일");
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment1, container, false);
+        nameIn = rootView.findViewById(R.id.name);
+        ageIn = rootView.findViewById(R.id.age);
+        birth = rootView.findViewById(R.id.date_picker_actions);
+        savebt = rootView.findViewById(R.id.save);
+        birth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateDialog();
+            }
+        });
+        savebt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nameStr = nameIn.getText().toString();
+                String ageStr = ageIn.getText().toString();
+                String birthStr = birth.getText().toString();
+                Toast.makeText(getContext(), "이름"+nameStr+"나이"+ageStr+"생일: "+birthStr,Toast.LENGTH_SHORT).show();
+                Log.i("꺄륵","눌림");
+            }
+        });
+        Date curDate = new Date();
+        setSelectDate(curDate);
+
+        return rootView;
+    }
+    private void setSelectDate(Date date){
+        String selectDateStr = dateFormat.format(date);
+        birth.setText(selectDateStr);
+
+    }
+    private void showDateDialog(){
+        String birthDateStr = birth.getText().toString();
+        Calendar calendar = Calendar.getInstance();
+        Date curBirthDate = new Date();
+        try{
+            curBirthDate = dateFormat.parse(birthDateStr);
+        }catch (Exception e){
+
+        }
+        calendar.setTime(curBirthDate);
+
+        int curYear = calendar.get(calendar.YEAR);
+        int curMonth = calendar.get(calendar.MONTH);
+//        int curDay = calendar.get(calendar.DAY_OF_MONTH);
+        int curDay = calendar.get(calendar.DATE);
+
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),birthDateSetListener,curYear,curMonth,curDay);
+        datePickerDialog.show();
+    }
+
+    private DatePickerDialog.OnDateSetListener birthDateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            Calendar selectedCalendar = Calendar.getInstance();
+            selectedCalendar.set(Calendar.YEAR,year);
+            selectedCalendar.set(Calendar.MONTH,month);
+            selectedCalendar.set(Calendar.DATE,dayOfMonth);
+
+            Date curDate = selectedCalendar.getTime();
+            setSelectDate(curDate);
+        }
+    };
+
+
+}
