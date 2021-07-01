@@ -1,0 +1,85 @@
+package org.techtown.misson13;
+
+import android.text.Layout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHolder> implements onCustomerItemClickListener{
+    ArrayList<Customer> items = new ArrayList<>();
+    onCustomerItemClickListener listener;
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View itemView =inflater.inflate(R.layout.customer_item,parent,false);
+
+        return new ViewHolder(itemView,this);
+    }
+
+    @Override
+    public void onBindViewHolder(CustomerAdapter.ViewHolder holder, int position) {
+        Customer item = items.get(position);
+        holder.setItem(item);
+    }
+
+    @Override
+    public int getItemCount() {
+        return items.size();
+    }
+
+    public void addItem(Customer item){
+        items.add(item);
+    }
+
+    public Customer getItem(int position){
+        return items.get(position);
+    }
+
+    @Override
+    public void onItemClick(ViewHolder holder, View view, int position) {
+        listener.onItemClick(holder,view,position);
+    }
+
+    public void setOnItemClickListener(onCustomerItemClickListener listener){
+        this.listener = listener;
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder{
+        TextView textView,textView1,textView2;
+        ImageView imageView;
+        public ViewHolder(View itemView,onCustomerItemClickListener listener) {
+            super(itemView);
+            textView = itemView.findViewById(R.id.textView);
+            textView1 = itemView.findViewById(R.id.textView2);
+            textView2= itemView.findViewById(R.id.textView3);
+            imageView = itemView.findViewById(R.id.imageView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    listener.onItemClick(ViewHolder.this,v,position);
+                }
+            });
+        }
+
+        public void setItem(Customer item){
+            textView.setText(item.getName());
+            textView1.setText(item.getBirth());
+            textView2.setText(item.getMobile());
+            imageView.setImageResource(item.getResId());
+
+        }
+    }
+
+}
