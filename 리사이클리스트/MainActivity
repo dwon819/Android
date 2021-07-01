@@ -1,0 +1,80 @@
+package org.techtown.misson13;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText editText,editText1,editText2;
+    TextView textView;
+    RecyclerView recyclerView;
+    CustomerAdapter adapter;
+    Button button;
+    public void alert(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("당장 적어").setMessage("Right now!");
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        editText = findViewById(R.id.editText);
+        editText1 = findViewById(R.id.editText2);
+        editText2 = findViewById(R.id.editText3);
+        button = findViewById(R.id.button);
+
+        textView = findViewById(R.id.textView);
+
+        recyclerView = findViewById(R.id.recyclerView);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);//위아래스크롤기능 추가
+
+        adapter = new CustomerAdapter();
+
+
+        adapter.addItem(new Customer("김준수","1995-10-20","010-123-1234",R.drawable.cus));
+        adapter.addItem(new Customer("홍길동","1992-10-22","010-123-4567",R.drawable.cus));
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(editText.getText().toString().equals("") || editText.getText().toString() == null){
+                    alert(v);
+                } else {
+                    adapter.addItem(new Customer(editText.getText().toString(), editText1.getText().toString(),
+                            editText2.getText().toString(), R.drawable.cus));
+                    adapter.notifyDataSetChanged();
+//                recyclerView.smoothScrollToPosition(adapter.getItemCount()-1);
+                    textView.setText(adapter.getItemCount() + "명");
+                }
+            }
+        });
+        textView.setText(adapter.getItemCount()+"명");
+
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new onCustomerItemClickListener() {
+            @Override
+            public void onItemClick(CustomerAdapter.ViewHolder holder, View view, int position) {
+                Customer item = adapter.getItem(position);
+                Toast.makeText(getApplicationContext(),"선택 정보: "+item.getName(),Toast.LENGTH_LONG).show();
+                Log.i("tag","헤헤헤헤");
+
+            }
+        });
+    }
+}
