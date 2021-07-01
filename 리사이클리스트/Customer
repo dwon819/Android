@@ -1,0 +1,51 @@
+package org.techtown.misson13;
+
+public class Customer {
+    String name,birth,mobile;
+    int resId;
+
+    public Customer(String name, String birth, String mobile) {
+        this.name = name;
+        this.birth = birth;
+        this.mobile = mobile;
+    }
+
+    public Customer(String name, String birth, String mobile, int resId) {
+        this.name = name;
+        this.birth = birth;
+        this.mobile = mobile;
+        this.resId = resId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getBirth() {
+        return birth;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public int getResId() {
+        return resId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public void setResId(int resId) {
+        this.resId = resId;
+    }
+}
